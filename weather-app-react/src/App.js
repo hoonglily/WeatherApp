@@ -6,8 +6,6 @@ function App() {
   const [location, setLocation] = useState('');
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
-  console.log('process', process.env);
-  console.log('apikey:', apiKey)
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
   useEffect(() => {
     const fetchData = async () => {
