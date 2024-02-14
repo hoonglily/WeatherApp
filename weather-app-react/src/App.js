@@ -7,7 +7,7 @@ function App() {
   const [showResults, setShowResults] = useState(false);
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${apiKey}`;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,29 +43,32 @@ function App() {
       <div className='container'>
         <div className='top'>
           <div className='location'>
-            <p>Dallas</p>
+            <p>{data.name || ''}</p>
           </div>
           <div className='temp'>
-            <h1>60 Degrees</h1>
+            {data.main ? <h1>{data.main?.temp.toFixed()}°F</h1> : null}
           </div>
           <div className='description'>
-            <p>Cloudy</p>
+            <p>{data.weather?.[0]?.main}</p>
           </div>
         </div>
+
+        {data.name != undefined && (
         <div className='bottom'>
           <div className='feels'>
-            <p className='bold'>60 Degrees</p>
+            <p className='bold'>{data.main?.feels_like.toFixed()}°F</p>
             <p>Feels Like</p>
           </div>
           <div className='humidity'>
-            <p className='bold'>20%</p>
+            <p className='bold'>{data.main?.humidity}%</p>
             <p>Humidity</p>
           </div>
           <div className='wind'>
-            <p className='bold'>12 MPH</p>
+            <p className='bold'>{data.wind?.speed.toFixed()} MPH</p>
             <p>Wind Speed</p>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
