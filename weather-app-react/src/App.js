@@ -30,8 +30,22 @@ function App() {
     }
   };
 
+  const getBackgroundImage = (weatherDescription) => {
+    const imageMap = {
+      'Thunderstorm': './Assets/thunderstorm.jpeg',
+      'Snow': './Assets/snow.jpeg',
+      'Rain': './Assets/rain.jpeg',
+      'Clouds': './Assets/clouds.jpeg',
+      'Clear': './Assets/clearsky.jpeg',
+    }
+    const defaultImage = './Assets/clouds.jpeg';
+    const selectedImage = imageMap[weatherDescription] || defaultImage;
+
+  return selectedImage; 
+  }
+
   return (
-    <div className="app">
+    <div className="app" style={{backgroundImage: './Assets/clearsky.jpeg' }}>
       <div className='search'>
         <input
           value={location}
