@@ -4,23 +4,31 @@ import axios from 'axios';
 function App() {
   const [data, setData] = useState ({});
   const [location, setLocation] = useState('');
+  const [showResults, setShowResults] = useState(false);
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (location) {
+        if (location && showResults) {
           const response = await axios.get(url);
           setData(response.data);
-          console.log('RESPONSE DATA:',response.data);
+          console.log('RESPONSE DATA:', response.data);
         }
       } catch (error) {
-        console.log('Error fetching data: ', error)
+        console.log('Error fetching data: ', error);
       }
     };
     fetchData();
-  }, [location, url]);
+  }, [location, url, showResults]);
+
+  const handleEnterKey = (event) => {
+    if (event.key === 'Enter'){
+      setShowResults(true);
+    }
+  };
 
   return (
     <div className="app">
@@ -28,6 +36,7 @@ function App() {
         <input
           value={location}
           onChange={event => setLocation(event.target.value)}
+          onKeyPress={handleEnterKey}
           placeholder='Enter Location'
           type='text'/>
       </div>
