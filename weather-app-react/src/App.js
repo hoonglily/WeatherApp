@@ -5,6 +5,7 @@ function App({}) {
   const [data, setData] = useState ({});
   const [location, setLocation] = useState('');
   const [inputValue, setInputValue] = useState('');
+  const [isMetric, setIsMetric] = useState(false);
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${apiKey}`;
@@ -27,12 +28,16 @@ function App({}) {
   const handleEnterKey = (event) => {
     if (event.key === 'Enter'){
       setLocation(inputValue);
-      console.log('search for:', inputValue);
+      // console.log('search for:', inputValue);
     }
   };
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
+  }
+
+  const toggleMetrics = () => {
+    setIsMetric((prevIsMetric) => !prevIsMetric);
   }
 
   return (
@@ -45,6 +50,8 @@ function App({}) {
           placeholder='Enter Location'
           type='text'/>
       </div>
+      
+      {data.name != undefined && (
       <div className='container'>
         <div className='top'>
           <div className='location'>
@@ -58,7 +65,6 @@ function App({}) {
           </div>
         </div>
 
-        {data.name != undefined && (
         <div className='bottom'>
           <div className='feels'>
             <p className='bold'>{data.main?.feels_like.toFixed()}°F</p>
@@ -72,9 +78,17 @@ function App({}) {
             <p className='bold'>{data.wind?.speed.toFixed()} MPH</p>
             <p>Wind Speed</p>
           </div>
+          <div className='toggle'>
+            <input 
+            type='button' 
+            value={isMetric ? 'Celsius' : 'Fahrenheit'}
+            className='button' 
+            onClick={toggleMetrics}
+            />
+          </div>
         </div>
-        )}
       </div>
+      )}
     </div>
   );
 }

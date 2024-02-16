@@ -72,6 +72,9 @@ h1 {
   width: 100%;
   margin: 1rem auto;
   position: relative;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .app .description {
@@ -96,4 +99,19 @@ h1 {
 
 .bold {
   font-weight: 700;
+}
+
+.toggle {
+  position: fixed;
+  top: 20px;
+  right: 10px;
+}
+
+.toggle .button{
+  font-size: 1em;
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
