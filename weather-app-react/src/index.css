@@ -79,7 +79,7 @@ h1 {
 
 .app .description {
   position: absolute;
-  top: 50%;
+  top: 40%;
   right: 0;
   transform: rotate(270deg);
   /* transform-origin: 0 0;
@@ -101,17 +101,12 @@ h1 {
   font-weight: 700;
 }
 
-.toggle {
-  position: fixed;
-  top: 20px;
-  right: 10px;
-}
-
 .toggle .button{
+  position: relative;
+  top: auto;
+  right: auto;
+  margin-top: 10px;
   font-size: 1em;
   padding: 10px;
   background-color: transparent;
-  color: #fff;
-  border: none;
-  cursor: pointer;
 }
