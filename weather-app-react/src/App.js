@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import axios, { isCancel } from 'axios';
 
 function App({}) {
   const [data, setData] = useState ({});
   const [location, setLocation] = useState('');
   const [inputValue, setInputValue] = useState('');
-  const [isMetric, setIsMetric] = useState(false);
+  const [isFahrenheit, setIsFahrenheit] = useState(true);
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${apiKey}`;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (location) {
+          const units = isFahrenheit ? 'imperial' : 'metric';
+          const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${apiKey}`;
           const response = await axios.get(url);
           setData(response.data);
           console.log('RESPONSE DATA:', response.data);
@@ -23,7 +24,7 @@ function App({}) {
       }
     };
     fetchData();
-  }, [location, url]);
+  }, [location, isFahrenheit, apiKey]);
 
   const handleEnterKey = (event) => {
     if (event.key === 'Enter'){
@@ -37,7 +38,7 @@ function App({}) {
   }
 
   const toggleMetrics = () => {
-    setIsMetric((prevIsMetric) => !prevIsMetric);
+    setIsFahrenheit(!isFahrenheit);
   }
 
   return (
@@ -58,16 +59,28 @@ function App({}) {
             <p>{data.name || ''}</p>
           </div>
           <div className='temp'>
-            {data.main ? <h1>{data.main?.temp.toFixed()}°F</h1> : null}
+            {data.main ? <h1>{isFahrenheit ? data.main?.feels_like.toFixed() + '°F'
+              : data.main?.feels_like.toFixed() + '°C'}</h1> : null}
           </div>
           <div className='description'>
             <p>{data.weather?.[0]?.main}</p>
+          </div>
+          <div className='toggle'>
+            <input 
+            type='button' 
+            value={isFahrenheit ? 'Fahrenheit' : 'Celsius'}
+            className='button' 
+            onClick={toggleMetrics}
+            />
           </div>
         </div>
 
         <div className='bottom'>
           <div className='feels'>
-            <p className='bold'>{data.main?.feels_like.toFixed()}°F</p>
+            <p className='bold'>
+              {isFahrenheit ? data.main?.feels_like.toFixed() + '°F'
+                : data.main?.feels_like.toFixed() + '°C'} 
+            </p>
             <p>Feels Like</p>
           </div>
           <div className='humidity'>
@@ -77,14 +90,6 @@ function App({}) {
           <div className='wind'>
             <p className='bold'>{data.wind?.speed.toFixed()} MPH</p>
             <p>Wind Speed</p>
-          </div>
-          <div className='toggle'>
-            <input 
-            type='button' 
-            value={isMetric ? 'Celsius' : 'Fahrenheit'}
-            className='button' 
-            onClick={toggleMetrics}
-            />
           </div>
         </div>
       </div>
