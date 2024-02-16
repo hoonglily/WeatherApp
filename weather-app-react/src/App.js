@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-function App() {
+function App({}) {
   const [data, setData] = useState ({});
   const [location, setLocation] = useState('');
-  const [showResults, setShowResults] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${apiKey}`;
@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (location && showResults) {
+        if (location) {
           const response = await axios.get(url);
           setData(response.data);
           console.log('RESPONSE DATA:', response.data);
@@ -22,35 +22,26 @@ function App() {
       }
     };
     fetchData();
-  }, [location, url, showResults]);
+  }, [location, url]);
 
   const handleEnterKey = (event) => {
     if (event.key === 'Enter'){
-      setShowResults(true);
+      setLocation(inputValue);
+      console.log('search for:', inputValue);
     }
   };
 
-  const getBackgroundImage = (weatherDescription) => {
-    const imageMap = {
-      'Thunderstorm': './Assets/thunderstorm.jpeg',
-      'Snow': './Assets/snow.jpeg',
-      'Rain': './Assets/rain.jpeg',
-      'Clouds': './Assets/clouds.jpeg',
-      'Clear': './Assets/clearsky.jpeg',
-    }
-    const defaultImage = './Assets/clouds.jpeg';
-    const selectedImage = imageMap[weatherDescription] || defaultImage;
-
-  return selectedImage; 
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
   }
 
   return (
-    <div className="app" style={{backgroundImage: './Assets/clearsky.jpeg' }}>
+    <div className="app">
       <div className='search'>
         <input
-          value={location}
-          onChange={event => setLocation(event.target.value)}
-          onKeyPress={handleEnterKey}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleEnterKey}
           placeholder='Enter Location'
           type='text'/>
       </div>
