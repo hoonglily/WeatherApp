@@ -1,11 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import axios, { isCancel } from 'axios';
+import clearSkyImage from './Assets/clearsky.jpeg'
+import cloudImage from './Assets/clouds.jpeg'
+import mistImage from './Assets/mist.jpeg'
+import rainImage from './Assets/rain.jpeg'
+import snowImage from './Assets/snow.jpeg'
+import thunderstormImage from './Assets/thunderstorm.jpeg'
+
 
 function App({}) {
   const [data, setData] = useState ({});
   const [location, setLocation] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isFahrenheit, setIsFahrenheit] = useState(true);
+  const [backgroundImage, setBackgroundImage] = useState('');
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
@@ -18,6 +26,13 @@ function App({}) {
           const response = await axios.get(url);
           setData(response.data);
           console.log('RESPONSE DATA:', response.data);
+
+          const weatherDescription = response.data.weather?.[0]?.main;
+          const backgroundPic = backgroundImages[weatherDescription] || backgroundImages.Default;
+          setBackgroundImage(backgroundPic)
+          console.log('weather Description:', weatherDescription)
+          console.log('background pic: ',backgroundPic)
+          console.log('default:',backgroundImages.Default)
         }
       } catch (error) {
         console.log('Error fetching data: ', error);
@@ -41,8 +56,19 @@ function App({}) {
     setIsFahrenheit(!isFahrenheit);
   }
 
+  const backgroundImages = {
+    'Clear': `url(${clearSkyImage})`,
+    'Clouds': `url(${cloudImage})`,
+    'Snow': `url(${snowImage})`,
+    'Rain': `url(${rainImage})`,
+    'Drizzle': `url(${rainImage})`,
+    'Thunderstorm': `url(${thunderstormImage})`,
+    'Mist': `url(${mistImage})`,
+    'Default': `url(${clearSkyImage})`,
+  }
+
   return (
-    <div className="app">
+    <div className="app" style={{backgroundImage: backgroundImage}}>
       <div className='search'>
         <input
           value={inputValue}
