@@ -50,7 +50,7 @@ body:after {
 .app .search {
  text-align: center;
  padding: 1rem;
- z-index: 2;
+ z-index: 1;
 }
 
 .app input {
@@ -76,7 +76,7 @@ body:after {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 2;
 }
 
 .app .top {
