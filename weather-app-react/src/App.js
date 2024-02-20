@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import axios, { isCancel } from 'axios';
-import clearSkyImage from './Assets/clearsky.jpeg'
-import cloudImage from './Assets/clouds.jpeg'
-import mistImage from './Assets/mist.jpeg'
-import rainImage from './Assets/rain.jpeg'
-import snowImage from './Assets/snow.jpeg'
-import thunderstormImage from './Assets/thunderstorm.jpeg'
+import defaultImage from './Assets/default.jpeg';
+import clearSkyImage from './Assets/clearsky.jpeg';
+import cloudImage from './Assets/clouds.jpeg';
+import mistImage from './Assets/mist.jpeg';
+import rainImage from './Assets/rain.jpeg';
+import snowImage from './Assets/snow.jpeg';
+import thunderstormImage from './Assets/thunderstorm.jpeg';
+import hazeImage from './Assets/haze.webp';
 
 
 function App({}) {
@@ -64,7 +66,8 @@ function App({}) {
     'Drizzle': `url(${rainImage})`,
     'Thunderstorm': `url(${thunderstormImage})`,
     'Mist': `url(${mistImage})`,
-    'Default': `url(${clearSkyImage})`,
+    'Haze': `url(${hazeImage})`,
+    'Default': `url(${defaultImage})`,
   }
 
   return (
