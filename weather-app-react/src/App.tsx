@@ -1,21 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import axios, { isCancel } from 'axios';
-import defaultImage from './Assets/default.jpeg';
-import clearSkyImage from './Assets/clearsky.jpeg';
-import cloudImage from './Assets/clouds.jpeg';
-import mistImage from './Assets/mist.jpeg';
-import rainImage from './Assets/rain.jpeg';
-import snowImage from './Assets/snow.jpeg';
-import thunderstormImage from './Assets/thunderstorm.jpeg';
-import hazeImage from './Assets/haze.webp';
+import React, {useEffect, useState, ChangeEvent, KeyboardEvent} from 'react';
+import axios, { AxiosResponse } from 'axios';
 
+const defaultImage = require('./Assets/default.jpeg') as string;
+const clearSkyImage = require('./Assets/clearsky.jpeg') as string;
+const cloudImage = require('./Assets/clouds.jpeg') as string;
+const mistImage = require('./Assets/mist.jpeg') as string;
+const rainImage = require('./Assets/rain.jpeg') as string;
+const snowImage = require('./Assets/snow.jpeg') as string;
+const thunderstormImage = require('./Assets/thunderstorm.jpeg') as string;
+const hazeImage = require('./Assets/haze.webp');
 
-function App({}) {
-  const [data, setData] = useState ({});
-  const [location, setLocation] = useState('');
-  const [inputValue, setInputValue] = useState('');
-  const [isFahrenheit, setIsFahrenheit] = useState(true);
-  const [backgroundImage, setBackgroundImage] = useState('');
+interface WeatherData {
+  name?: string;
+  main?: {
+    feels_like?: number;
+    humidity?: number;
+  };
+  weather?: Array<{ main?: string }>;
+  wind?: { speed?: number };
+}
+
+interface BackgroundImages {
+  [key: string]: string;
+}
+
+interface Props {}
+
+function App({}: Props) {
+  const [data, setData] = useState<WeatherData> ({});
+  const [location, setLocation] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
+  const [isFahrenheit, setIsFahrenheit] = useState<boolean>(true);
+  const [backgroundImage, setBackgroundImage] = useState<string>('');
 
   const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
@@ -25,16 +41,13 @@ function App({}) {
         if (location) {
           const units = isFahrenheit ? 'imperial' : 'metric';
           const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=${units}&appid=${apiKey}`;
-          const response = await axios.get(url);
+          const response: AxiosResponse<WeatherData> = await axios.get(url);
           setData(response.data);
           console.log('RESPONSE DATA:', response.data);
 
           const weatherDescription = response.data.weather?.[0]?.main;
-          const backgroundPic = backgroundImages[weatherDescription] || backgroundImages.Default;
-          setBackgroundImage(backgroundPic)
-          console.log('weather Description:', weatherDescription)
-          console.log('background pic: ',backgroundPic)
-          console.log('default:',backgroundImages.Default)
+          const backgroundPic = backgroundImages[weatherDescription || ''] || backgroundImages.Default;
+          setBackgroundImage(backgroundPic);
         }
       } catch (error) {
         console.log('Error fetching data: ', error);
@@ -43,14 +56,14 @@ function App({}) {
     fetchData();
   }, [location, isFahrenheit, apiKey]);
 
-  const handleEnterKey = (event) => {
+  const handleEnterKey = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter'){
       setLocation(inputValue);
       // console.log('search for:', inputValue);
     }
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   }
 
@@ -58,7 +71,7 @@ function App({}) {
     setIsFahrenheit(!isFahrenheit);
   }
 
-  const backgroundImages = {
+  const backgroundImages: BackgroundImages = {
     'Clear': `url(${clearSkyImage})`,
     'Clouds': `url(${cloudImage})`,
     'Snow': `url(${snowImage})`,
@@ -88,8 +101,8 @@ function App({}) {
             <p>{data.name || ''}</p>
           </div>
           <div className='temp'>
-            {data.main ? <h1>{isFahrenheit ? data.main?.feels_like.toFixed() + '°F'
-              : data.main?.feels_like.toFixed() + '°C'}</h1> : null}
+            {data.main ? <h1>{isFahrenheit ? data.main.feels_like?.toFixed() + '°F'
+              : data.main.feels_like?.toFixed() + '°C'}</h1> : null}
           </div>
           <div className='description'>
             <p>{data.weather?.[0]?.main}</p>
@@ -107,8 +120,8 @@ function App({}) {
         <div className='bottom'>
           <div className='feels'>
             <p className='bold'>
-              {isFahrenheit ? data.main?.feels_like.toFixed() + '°F'
-                : data.main?.feels_like.toFixed() + '°C'} 
+              {isFahrenheit ? data.main?.feels_like?.toFixed() + '°F'
+                : data.main?.feels_like?.toFixed() + '°C'} 
             </p>
             <p>Feels Like</p>
           </div>
@@ -117,7 +130,7 @@ function App({}) {
             <p>Humidity</p>
           </div>
           <div className='wind'>
-            <p className='bold'>{data.wind?.speed.toFixed()} MPH</p>
+            <p className='bold'>{data.wind?.speed?.toFixed()} MPH</p>
             <p>Wind Speed</p>
           </div>
         </div>
