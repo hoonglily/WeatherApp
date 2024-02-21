@@ -117,18 +117,18 @@ function App() {
 
         <div className='bottom'>
           <div className='feels'>
-            <p className='bold'>
+            <p className='bold-text'>
               {isFahrenheit ? data.main?.feels_like?.toFixed() + '°F'
                 : data.main?.feels_like?.toFixed() + '°C'} 
             </p>
             <p>Feels Like</p>
           </div>
           <div className='humidity'>
-            <p className='bold'>{data.main?.humidity}%</p>
+            <p className='bold-text'>{data.main?.humidity}%</p>
             <p>Humidity</p>
           </div>
           <div className='wind'>
-            <p className='bold'>{data.wind?.speed?.toFixed()} MPH</p>
+            <p className='bold-text'>{data.wind?.speed?.toFixed()} MPH</p>
             <p>Wind Speed</p>
           </div>
         </div>
