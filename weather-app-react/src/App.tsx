@@ -24,9 +24,19 @@ interface BackgroundImages {
   [key: string]: string;
 }
 
-interface Props {}
+const backgroundImages: BackgroundImages = {
+  'Clear': `url(${clearSkyImage})`,
+  'Clouds': `url(${cloudImage})`,
+  'Snow': `url(${snowImage})`,
+  'Rain': `url(${rainImage})`,
+  'Drizzle': `url(${rainImage})`,
+  'Thunderstorm': `url(${thunderstormImage})`,
+  'Mist': `url(${mistImage})`,
+  'Haze': `url(${hazeImage})`,
+  'Default': `url(${defaultImage})`,
+}
 
-function App({}: Props) {
+function App() {
   const [data, setData] = useState<WeatherData> ({});
   const [location, setLocation] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
@@ -71,18 +81,6 @@ function App({}: Props) {
     setIsFahrenheit(!isFahrenheit);
   }
 
-  const backgroundImages: BackgroundImages = {
-    'Clear': `url(${clearSkyImage})`,
-    'Clouds': `url(${cloudImage})`,
-    'Snow': `url(${snowImage})`,
-    'Rain': `url(${rainImage})`,
-    'Drizzle': `url(${rainImage})`,
-    'Thunderstorm': `url(${thunderstormImage})`,
-    'Mist': `url(${mistImage})`,
-    'Haze': `url(${hazeImage})`,
-    'Default': `url(${defaultImage})`,
-  }
-
   return (
     <div className="app" style={{backgroundImage: backgroundImage}}>
       <div className='search'>
@@ -94,7 +92,7 @@ function App({}: Props) {
           type='text'/>
       </div>
       
-      {data.name != undefined && (
+      {data.name !== undefined && (
       <div className='container'>
         <div className='top'>
           <div className='location'>
