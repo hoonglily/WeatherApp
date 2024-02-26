@@ -1,5 +1,6 @@
 import React, {useEffect, useState, ChangeEvent, KeyboardEvent} from 'react';
 import axios, { AxiosResponse } from 'axios';
+import SearchIcon from '@mui/icons-material/Search';
 
 const defaultImage = require('./Assets/default.jpeg') as string;
 const clearSkyImage = require('./Assets/clearsky.jpeg') as string;
@@ -89,7 +90,9 @@ function App() {
           onChange={handleInputChange}
           onKeyDown={handleEnterKey}
           placeholder='Enter Location'
-          type='text'/>
+          type='text'
+        />
+        <SearchIcon className='search-icon'/>
       </div>
       
       {data.name !== undefined && (
